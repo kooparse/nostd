@@ -68,24 +68,24 @@ void arena_tests () {
         int another_field;
     };
 
-    auto struct_size = align_forward(sizeof(MyStruct), 16);
+    auto struct_size = sizeof(MyStruct);
 
     Arena arena{};
 
-    auto buffer_length = sizeof(char) * 1024;
+    auto buffer_length = 1024;
     auto backbuffer    = malloc(buffer_length);
 
     arena_init(&arena, (unsigned char*) backbuffer, buffer_length);
     assert(arena.offset == 0);
 
-    printf("arena offset: %zu", arena.offset);
+    printf("arena offset: %zu\n", arena.offset);
 
     auto d = arena_push<MyStruct>(&arena, { 12.5, 80 });
     assert(arena.offset == struct_size);
     printf("index: %f, value: %i\n", d->field, d->another_field);
 
     d = arena_push<MyStruct>(&arena, { 40.245, 30 });
-    assert(arena.offset == struct_size * 2);
+    assert(arena.offset == 24);
     printf("index: %f, value: %i\n", d->field, d->another_field);
 
     printf("arena offset: %zu\n", arena.offset);
@@ -94,11 +94,11 @@ void arena_tests () {
         Temp_Arena temp = temp_begin(&arena);
 
         d = arena_push<MyStruct>(&arena, { 2.1, 9 });
-        assert(arena.offset == struct_size * 3);
+        assert(arena.offset == 40);
         printf("index: %f, value: %i\n", d->field, d->another_field);
 
         d = arena_push<MyStruct>(&arena, { 3.4, 7 });
-        assert(arena.offset == struct_size * 4);
+        assert(arena.offset == 56);
         printf("index: %f, value: %i\n", d->field, d->another_field);
 
         temp_end(temp);
@@ -108,16 +108,16 @@ void arena_tests () {
         Temp_Arena temp = temp_begin(&arena);
 
         arena_push<MyStruct>(&arena, { 2.1, 9 });
-        assert(arena.offset == struct_size * 3);
+        assert(arena.offset == 40);
 
         arena_push<MyStruct>(&arena, { 3.4, 7 });
-        assert(arena.offset == struct_size * 4);
+        assert(arena.offset == 56);
 
         temp_end(temp);
     }
 
 
-    assert(arena.offset == struct_size * 2);
+    assert(arena.offset == 24);
     printf("arena offset: %zu\n", arena.offset);
 
     arena_reset(&arena);

@@ -31,10 +31,11 @@ size_t align_forward(size_t s, size_t alignment) {
 }
 
 void* arena_alloc(Arena* arena, size_t size) {
-    assert((arena->offset + size) <= arena->capacity);
+    auto pos = align_forward(arena->offset, 16);
+    assert((pos + size) <= arena->capacity);
 
-    arena->prev_offset = arena->offset;
-    arena->offset += align_forward(size, 16);
+    arena->prev_offset = pos;
+    arena->offset = pos + size;
 
     return arena->base_pointer + arena->prev_offset;
 }
