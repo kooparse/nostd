@@ -68,8 +68,7 @@ void arena_tests () {
         int another_field;
     };
 
-    auto struct_size = sizeof(MyStruct);
-
+    auto struct_size = align_forward(sizeof(MyStruct), 16);
 
     Arena arena{};
 

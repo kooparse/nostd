@@ -19,11 +19,22 @@ void arena_init(Arena* arena, unsigned char* backbuffer, size_t buf_length) {
     arena->capacity    = buf_length;
 }
 
+size_t align_forward(size_t s, size_t alignment) {
+    auto size     = s;
+    auto reminder = size % alignment;
+
+    if (reminder > 0) {
+        size += alignment - reminder;
+    }
+
+    return size;
+}
+
 void* arena_alloc(Arena* arena, size_t size) {
     assert((arena->offset + size) <= arena->capacity);
 
     arena->prev_offset = arena->offset;
-    arena->offset += size;
+    arena->offset += align_forward(size, 16);
 
     return arena->base_pointer + arena->prev_offset;
 }
