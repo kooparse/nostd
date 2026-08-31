@@ -1,13 +1,13 @@
-#include <stdlib.h> // For malloc/realloc/free.
+#pragma once
 
-const int DEFAULT_CAPACITY = 12;
+#include <stdlib.h>
 
 template <typename T>
 struct Array {
     T*   data;
     int  count;
 
-    unsigned int capacity;
+    size_t capacity;
 };
 
 template <typename T>
@@ -15,7 +15,7 @@ void array_init(Array<T>* array) {
     if (array->data != nullptr) return;
 
     array->count     = 0;
-    array->capacity  = sizeof(T) * DEFAULT_CAPACITY;
+    array->capacity  = sizeof(T) * 100;
     array->data      = (T*) malloc(array->capacity);
 }
 
@@ -23,7 +23,7 @@ template <typename T>
 void array_add(Array<T>* array, T value) {
     array_init(array);
 
-    if (array->capacity < array->count) {
+    if (array->capacity < (size_t) array->count) {
         array->data = (T*) realloc(array->data, array->capacity * 2);
     }
 
