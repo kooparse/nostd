@@ -1,4 +1,4 @@
-## Odd Library
+## Nonstd
 
-A collection of code I made,
+A collection of code I made...
 
