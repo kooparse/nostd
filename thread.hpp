@@ -11,8 +11,8 @@ using std::counting_semaphore;
 class Thread_Group;
 
 struct Work_Info {
-    void* work; // user work data.
-    uint index; // thread index.
+    void* work; // User work data.
+    uint index; // Thread index.
 };
 
 typedef void (*Group_Func)(Work_Info, Thread_Group*);

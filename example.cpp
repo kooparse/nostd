@@ -133,7 +133,7 @@ const char* FILE_4 = "40";
 
 struct Work {
     const char* file_content;
-    int parsed_int;
+    int         parsed_int;
 };
 
 void demo_worker(Work_Info work_info, Thread_Group* thread_group) {

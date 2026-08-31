@@ -7,14 +7,14 @@
 // Linear arena.
 
 struct Arena {
-    unsigned char* base_pointer = NULL;
+    unsigned char* base_pointer = nullptr;
     size_t offset = 0;
     size_t prev_offset = 0;
     size_t capacity = 0;
 };
 
 inline void arena_init(Arena* arena, unsigned char* backbuffer, size_t buf_length) {
-    assert(arena->base_pointer == NULL && "Arena was allocated already. Base pointer is not null.");
+    assert(arena->base_pointer == nullptr && "Arena was allocated already. Base pointer is not null.");
 
     arena->base_pointer  = backbuffer;
     arena->offset      = 0;
