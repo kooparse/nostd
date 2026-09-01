@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <thread>
+#include <mutex>
+#include <cstdint>
 #include <semaphore>
 #include "array.hpp"
 
@@ -11,12 +13,12 @@ using std::counting_semaphore;
 class Thread_Group;
 
 struct Work_Info {
-    void* work; // User work data.
-    uint index; // Thread index.
+    void*    work; // User work data.
+    uint32_t index; // Thread index.
 };
 
 typedef void (*Group_Func)(Work_Info, Thread_Group*);
-static const uint MAX_THREAD_COUNT = 64;
+static const uint32_t MAX_THREAD_COUNT = 64;
 
 class Thread_Group {
     public:
@@ -40,7 +42,7 @@ class Thread_Group {
         counting_semaphore<> semaphore{0};
 
         thread  threads[MAX_THREAD_COUNT];
-        uint    thread_count = 0;
+        uint32_t    thread_count = 0;
 };
 
 inline void Thread_Group::add_work(void* work_data) {
@@ -55,17 +57,15 @@ inline void Thread_Group::add_work(void* work_data) {
 
 
 inline void Thread_Group::initialize(Group_Func func) {
-    thread_count = std::max<uint>(1, thread::hardware_concurrency());
-    thread_count = std::min<uint>(thread_count, MAX_THREAD_COUNT);
+    thread_count = std::max<uint32_t>(1, thread::hardware_concurrency());
+    thread_count = std::min<uint32_t>(thread_count, MAX_THREAD_COUNT);
 
     work_job     = func;
 
     work_available = {};
     work_finished  = {};
 
-    printf("Thread count: %i\n", thread_count);
-
-    for (uint i = 0; i < thread_count; i++) {
+    for (uint32_t i = 0; i < thread_count; i++) {
         threads[i] = std::thread([this, i]{
             while (true) {
                 semaphore.acquire();
@@ -106,11 +106,11 @@ inline void Thread_Group::shutdown () {
 
     should_exit.store(true);
 
-    for (uint i = 0; i < thread_count; i++) {
+    for (uint32_t i = 0; i < thread_count; i++) {
         semaphore.release();
     }
 
-    for (uint i = 0; i < thread_count; i++) {
+    for (uint32_t i = 0; i < thread_count; i++) {
         threads[i].join();
     }
 

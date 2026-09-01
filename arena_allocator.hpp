@@ -17,9 +17,9 @@ inline void arena_init(Arena* arena, unsigned char* backbuffer, size_t buf_lengt
     assert(arena->base_pointer == nullptr && "Arena was allocated already. Base pointer is not null.");
 
     arena->base_pointer  = backbuffer;
-    arena->offset      = 0;
-    arena->prev_offset = 0;
-    arena->capacity    = buf_length;
+    arena->offset        = 0;
+    arena->prev_offset   = 0;
+    arena->capacity      = buf_length;
 }
 
 inline size_t align_forward(size_t s, size_t alignment) {
