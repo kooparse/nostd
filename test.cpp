@@ -3,12 +3,12 @@
 
 #include "array.hpp"
 #include "arena_allocator.hpp"
-#include "thread.hpp"
+#include "thread_group.hpp"
 
 void array_tests() {
     printf("\n\n\nARRAY TESTS \n\n\n");
 
-    auto array = Array<int>{};
+    Array<int> array;
 
     array_add(&array, 2);
     array_add(&array, 3);
@@ -69,7 +69,7 @@ void arena_tests () {
 
     auto struct_size = sizeof(MyStruct);
 
-    Arena arena{};
+    Arena arena;
 
     auto buffer_length = 1024;
     auto backbuffer    = malloc(buffer_length);
@@ -161,10 +161,9 @@ void thread_tests () {
         { .file_content = FILE_4, },
     };
 
-    group.add_work(&worklist[0]);
-    group.add_work(&worklist[1]);
-    group.add_work(&worklist[2]);
-    group.add_work(&worklist[3]);
+    for (int i = 0; i < WORK_COUNT_TO_DO; i++) {
+        group.add_work(&worklist[i]);
+    }
 
     auto finish_count = 0;
     int result        = 0;

@@ -4,10 +4,10 @@
 
 template <typename T>
 struct Array {
-    T*   data;
-    int  count;
+    T*   data   = nullptr;
+    int  count  = 0;
 
-    size_t capacity;
+    size_t capacity = 0;
 };
 
 template <typename T>
