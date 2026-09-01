@@ -23,8 +23,9 @@ template <typename T>
 void array_add(Array<T>* array, T value) {
     array_init(array);
 
-    if (array->capacity < (size_t) array->count) {
-        array->data = (T*) realloc(array->data, array->capacity * 2);
+    if (array->capacity <= array->count * sizeof(T)) {
+        array->capacity = array->capacity * 2;
+        array->data     = (T*) realloc(array->data, array->capacity);
     }
 
     array->data[array->count] = value;
