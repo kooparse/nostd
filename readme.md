@@ -29,7 +29,7 @@ int main() {
     auto backbuffer    = malloc(buffer_length);
 
     // Let's assign our arena to this allocated memory.
-    arena_init(&arena, backbuffer, buffer_length);
+    arena_init(&arena, (unsigned char*) backbuffer, buffer_length);
 
     // Now, let's push some data here.
     auto ptr_to_int = arena_push<int>(&arena, 23);
@@ -148,10 +148,10 @@ allocator instead of internally malloc/free though.
 int main() {
     Array<float> arr;
 
-    array_add(&arr, 12.0);
-    array_add(&arr, 7.0);
-    array_add(&arr, 1.0);
-    array_add(&arr, 7.0);
+    array_add(&arr, 12.0f);
+    array_add(&arr, 7.0f);
+    array_add(&arr, 1.0f);
+    array_add(&arr, 7.0f);
 
     // Will display 4.
     printf("Array count is %i.", arr.count);

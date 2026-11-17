@@ -124,6 +124,7 @@ void arena_tests () {
 
     printf("arena offset: %zu\n", arena.offset);
 
+    free(backbuffer);
 }
 
 const char* FILE_1 = "10";
@@ -176,6 +177,8 @@ void thread_tests () {
             auto work = (Work*) finish_list.data[i];
             result += work->parsed_int;
         }
+
+        array_free(&finish_list);
     }
 
     printf("Work finished, result: %i", result);
